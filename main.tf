@@ -24,7 +24,17 @@ module "default_acl" {
   depends_on = [module.vpc]
 
   network_acl_rules   = [
-    { cidr_block = "0.0.0.0/0", protocol = 6, rule_action          = "allow", rule_number          = 102, egress               = false },
-    { cidr_block  = "8.8.4.4/32", protocol = 6, rule_action          = "deny", rule_number          = 105, egress               = true }
+    {
+      cidr_block = "0.0.0.0/0",
+      protocol = 6,
+      rule_action = "allow",
+      rule_number = 102,
+      egress = false },
+    {
+      cidr_block  = "8.8.4.4/32",
+      protocol = 6,
+      rule_action = "deny",
+      rule_number = 105,
+      egress = true }
   ]
 }

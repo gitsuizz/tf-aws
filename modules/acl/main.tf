@@ -25,20 +25,20 @@ resource "aws_network_acl" "default_acl" {
   vpc_id = var.vpc_id
 
   tags = {
-    Name        = "${data.aws_vpc.selected_vpc.tags["Name"]}-default-acl"
+    Name = "${data.aws_vpc.selected_vpc.tags["Name"]}-default-acl"
     Environment = "dev"
   }
 }
 
 resource "aws_network_acl_rule" "custom_acl_list" {
-  count         = length(local.validated_rules)
+  count = length(local.validated_rules)
 
-  network_acl_id       = aws_network_acl.default_acl.id
+  network_acl_id = aws_network_acl.default_acl.id
   egress = local.validated_rules[count.index].egress ? true : false
   protocol = local.validated_rules[count.index].protocol
   rule_action = local.validated_rules[count.index].rule_action == "allow" ? "allow" : "deny"
   rule_number = local.validated_rules[count.index].rule_number
-  cidr_block      = local.validated_rules[count.index].cidr_block
+  cidr_block = local.validated_rules[count.index].cidr_block
 }
 
 # Network ACL Inbound Rules (Add as per requirement)
@@ -67,8 +67,8 @@ resource "aws_network_acl_rule" "example_nacl_outbound" {
 
 resource "aws_network_acl_association" "subnet_assocations" {
   for_each = toset(data.aws_subnets.public_subnets.ids)
-  network_acl_id      = aws_network_acl.default_acl.id
-  subnet_id           = each.value
+  network_acl_id = aws_network_acl.default_acl.id
+  subnet_id = each.value
 }
 
 
